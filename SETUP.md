@@ -12,7 +12,7 @@
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/remittance-platform.git
+   git clone https://github.com/ganyak07/remittance-platform.git
    cd remittance-platform
    ```
 
@@ -72,8 +72,7 @@ gunicorn -w 4 -b 0.0.0.0:5000 run:app
 
 For more detailed troubleshooting, refer to the respective documentation of Bitcoin Core, LND, and Stacks.
 
-## Contributing
-Please read CONTRIBUTING.md for details on our code of conduct and the process for submitting pull requests.
+
 
 ## License
 This project is licensed under the MIT License - see the LICENSE.md file for details.

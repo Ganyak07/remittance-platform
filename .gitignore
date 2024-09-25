@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 .vscode/
 
+remittance-contract/settings/Mainnet.toml
+remittance-contract/settings/Testnet.toml
