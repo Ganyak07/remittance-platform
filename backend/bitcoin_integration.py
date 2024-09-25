@@ -3,6 +3,10 @@
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 from decimal import Decimal
 from .config import Config
+from .errors import BitcoinError
+import logging
+
+logger = logging.getLogger(__name__)
 
 class BitcoinIntegration:
     def __init__(self):
@@ -14,23 +18,28 @@ class BitcoinIntegration:
 
     def create_address(self):
         try:
-            return self.rpc_connection.getnewaddress()
+            address = self.rpc_connection.getnewaddress()
+            logger.info(f"Created new Bitcoin address: {address}")
+            return address
         except JSONRPCException as e:
-            print(f"An error occurred: {e}")
-            return None
+            logger.error(f"Failed to create new Bitcoin address: {str(e)}")
+            raise BitcoinError(f"Failed to create new Bitcoin address: {str(e)}")
 
     def get_balance(self):
         try:
-            return Decimal(self.rpc_connection.getbalance())
+            balance = Decimal(self.rpc_connection.getbalance())
+            logger.info(f"Retrieved Bitcoin balance: {balance}")
+            return balance
         except JSONRPCException as e:
-            print(f"An error occurred: {e}")
-            return Decimal('0')
+            logger.error(f"Failed to retrieve Bitcoin balance: {str(e)}")
+            raise BitcoinError(f"Failed to retrieve Bitcoin balance: {str(e)}")
 
     def send_bitcoin(self, address, amount):
         try:
             amount = float(amount)  # Convert to float for Bitcoin Core RPC
             txid = self.rpc_connection.sendtoaddress(address, amount)
+            logger.info(f"Sent {amount} BTC to {address}. Transaction ID: {txid}")
             return txid
         except JSONRPCException as e:
-            print(f"An error occurred: {e}")
-            return None
+            logger.error(f"Failed to send Bitcoin: {str(e)}")
+            raise BitcoinError(f"Failed to send Bitcoin: {str(e)}")
